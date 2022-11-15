@@ -1,0 +1,48 @@
+:root {
+  --green: #98d4bb;
+  --pink: #eb96aa;
+  --blue: #218b82;
+}
+
+.custombtn {
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: 3px solid;
+  margin: 0px 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.btn--green {
+  color: var(--green);
+  background-color: white;
+  border-color: var(--green);
+}
+
+.btn--green:hover {
+  color: white;
+  background-color: var(--green);
+}
+
+.btn--pink {
+  color: var(--pink);
+  background-color: white;
+  border-color: var(--pink);
+}
+
+.btn--pink:hover {
+  color: white;
+  background-color: var(--pink);
+}
+
+.btn--blue {
+  color: var(--blue);
+  background-color: white;
+  border-color: var(--blue);
+}
+
+.btn--blue:hover {
+  color: white;
+  background-color: var(--blue);
+}

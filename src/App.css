@@ -1,5 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  font-family: Nunito;
 }
 
 .App-logo {
@@ -35,4 +40,78 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.setting-title {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  margin: 40px 0px 40px 100px;
+  background-color: #e5dbd9;
+  border-radius: 15px;
+  min-height: 500px;
+  min-width: 500px;
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0px;
+}
+
+.settings-layout {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 30px;
+  background-color: white;
+  border-radius: 10px;
+  justify-content: left;
+  align-items: flex-start;
+  margin: 10px 0px 30px 0px;
+  width: 90%;
+}
+
+.setting-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+  text-align: left;
+  margin: 10px 0px;
+}
+
+.setting-input-div {
+  display: flex;
+  border: 1px solid black;
+  align-items: center;
+  padding: 5px 0px;
+  border-radius: 5px;
+  border: 1px solid #cbc8c8;
+  margin-top: 10px;
+}
+
+.setting-input {
+  width: 93%;
+  margin: 0px 10px;
+  outline: none;
+  border: none;
+  height: 1.5em;
+}
+
+.setting-label {
+  font-size: 20px;
+  width: auto;
+}
+
+.setting-listing {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 20px 0px;
 }
