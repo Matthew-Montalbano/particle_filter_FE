@@ -20,18 +20,8 @@ export const getScenarioById = async (id: string): Promise<Scenario> => {
   return response.data;
 };
 
-export const createScenario = async (
-  id: string,
-  trueTargetStates: TimeStateObject[],
-  standardDeviation: number,
-  seed: number
-) => {
-  await axios.post(`${ENDPOINT}/scenarios`, {
-    id: id,
-    trueTargetStates: trueTargetStates,
-    standardDeviation: standardDeviation,
-    seed: seed,
-  });
+export const createScenario = async (scenario: Scenario) => {
+  await axios.post(`${ENDPOINT}/scenarios`, scenario);
 };
 
 /* Particle Filter Routing */

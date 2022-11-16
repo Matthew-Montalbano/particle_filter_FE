@@ -1,0 +1,26 @@
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e7e7e7;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom: none;
+  margin-left: 0px;
+  margin-right: 0px;
+  color: #585858;
+  height: 2.5em;
+  width: 9em;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 16px;
+}
+
+.tab.active {
+  color: black;
+  background-color: #e5dbd9;
+}
+
+.tab:hover:not(.active) {
+  background-color: #bbb4b3;
+}
