@@ -40,7 +40,6 @@ export interface ParticleFilter {
   scenario: Scenario;
   particles: Particle[];
   time: number;
-  status: ParticleFilterStatus;
 }
 
 export enum ParticleFilterStatus {

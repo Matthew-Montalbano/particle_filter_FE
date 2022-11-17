@@ -91,7 +91,9 @@ function App() {
           </DropdownButton>
           <div className="settings-layout">
             <div className="setting-listing">
-              <div className="setting-label">Standard Deviation</div>
+              <div className="setting-label">
+                Observation Uncertainty (meters)
+              </div>
               <div className="setting-label listing-value">
                 {scenarioSettings?.standardDeviation}
               </div>
@@ -110,32 +112,32 @@ function App() {
             <FieldInput
               label="Number of Particles"
               onChange={(event) => {
-                setParticleFilterSettings({
-                  ...particleFilterSettings,
+                setParticleFilterSettings((prevState) => ({
+                  ...prevState,
                   numParticles: parseInt(event.target.value),
-                });
+                }));
               }}
               errorMessage={particleFilterInputErrors.numParticles}
               defaultValue={particleFilterSettings.numParticles}
             />
             <FieldInput
-              label="Mean Particle Maneuever Time"
+              label="Mean Particle Maneuever Time (seconds)"
               onChange={(event) => {
-                setParticleFilterSettings({
-                  ...particleFilterSettings,
+                setParticleFilterSettings((prevState) => ({
+                  ...prevState,
                   meanManeverTime: parseFloat(event.target.value),
-                });
+                }));
               }}
               errorMessage={particleFilterInputErrors.meanManeuverTime}
               defaultValue={particleFilterSettings.meanManeverTime}
             />
             <FieldInput
-              label="Max Particle Speed"
+              label="Max Particle Speed (m/s)"
               onChange={(event) => {
-                setParticleFilterSettings({
-                  ...particleFilterSettings,
+                setParticleFilterSettings((prevState) => ({
+                  ...prevState,
                   maxSpeed: parseFloat(event.target.value),
-                });
+                }));
               }}
               errorMessage={particleFilterInputErrors.maxSpeed}
               defaultValue={particleFilterSettings.maxSpeed}
@@ -201,9 +203,7 @@ function App() {
             scenario: scenarios.get(scenarioId)!,
             particles: processingResponse.particles,
             time: processingResponse.time,
-            status: ParticleFilterStatus.Paused,
           };
-          console.log(processingResponse);
           setParticleFilter(particleFilter);
           // TODO: Save particles and plot them on graph
         }
@@ -220,21 +220,21 @@ function App() {
             <FieldInput
               label="Scenario Name"
               onChange={(event) => {
-                setCreateScenarioSettings({
-                  ...createScenarioSettings,
+                setCreateScenarioSettings((prevState) => ({
+                  ...prevState,
                   id: event.target.value,
-                });
+                }));
               }}
               errorMessage={createScenarioInputErrors.scenarioName}
               defaultValue={createScenarioSettings.id}
             />
             <FieldInput
-              label="Standard Deviation"
+              label="Observation Uncertainty (meters)"
               onChange={(event) => {
-                setCreateScenarioSettings({
-                  ...createScenarioSettings,
+                setCreateScenarioSettings((prevState) => ({
+                  ...prevState,
                   standardDeviation: parseFloat(event.target.value),
-                });
+                }));
               }}
               errorMessage={createScenarioInputErrors.standardDeviation}
               defaultValue={createScenarioSettings.standardDeviation}
@@ -242,10 +242,10 @@ function App() {
             <FieldInput
               label="Seed"
               onChange={(event) => {
-                setCreateScenarioSettings({
-                  ...createScenarioSettings,
+                setCreateScenarioSettings((prevState) => ({
+                  ...prevState,
                   seed: parseInt(event.target.value),
-                });
+                }));
               }}
               errorMessage={createScenarioInputErrors.seed}
               defaultValue={createScenarioSettings.seed}
@@ -281,10 +281,10 @@ function App() {
     return Array.from(scenarios.keys()).map((scenarioId) => (
       <Dropdown.Item
         onClick={() => {
-          setCreateScenarioSettings({
-            ...createScenarioSettings,
+          setCreateScenarioSettings((prevState) => ({
+            ...prevState,
             trueTargetStates: scenarios.get(scenarioId)?.trueTargetStates || [],
-          });
+          }));
           setCreateScenarioDropdownTitle(scenarioId);
         }}
       >
@@ -353,10 +353,8 @@ function App() {
         <div className="configuration-contents">{renderCurrentTab()}</div>
       </div>
       <div className="visualization">
-        <div className="plot"></div>
-        <div className="playback"></div>
+        <ParticleFilterElement particleFilterProp={particleFilter} />
       </div>
-      <ParticleFilterElement particleFilterProp={particleFilter} />
     </div>
   );
 }
