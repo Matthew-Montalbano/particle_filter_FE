@@ -4,6 +4,7 @@ import {
   Particle,
   TimeStateObject,
   ParticleFilterSettings,
+  ParticleFilterProcessingResponse,
 } from "../interfaces";
 
 const ENDPOINT = "http://localhost:8080";
@@ -29,25 +30,29 @@ export const createScenario = async (scenario: Scenario) => {
 export const createParticleFilter = async (
   scenarioId: string,
   particleFilterSettings: ParticleFilterSettings
-) => {
-  await axios.post(`${ENDPOINT}/particleFilter`, {
+): Promise<ParticleFilterProcessingResponse> => {
+  const response = await axios.post(`${ENDPOINT}/particleFilter`, {
     scenarioId: scenarioId,
     numParticles: particleFilterSettings.numParticles,
     maxSpeed: particleFilterSettings.maxSpeed,
     meanManeuverTime: particleFilterSettings.meanManeverTime,
   });
+  return response.data;
 };
 
-export const processNextObservation = async (): Promise<Particle[]> => {
+export const processNextObservation = async (
+  particleFilterId: String
+): Promise<ParticleFilterProcessingResponse> => {
   const response = await axios.post(
-    `${ENDPOINT}/particleFilter/processSNextObservation`
+    `${ENDPOINT}/particleFilter/processNextObservation`,
+    { id: particleFilterId }
   );
   return response.data;
 };
 
 export const updateParticleFilterTime = async (
   time: number
-): Promise<Particle[]> => {
+): Promise<ParticleFilterProcessingResponse> => {
   const response = await axios.post(`${ENDPOINT}/particleFilter/updateTime`, {
     time: time,
   });

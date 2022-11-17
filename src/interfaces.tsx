@@ -13,6 +13,12 @@ export interface TimeStateObject {
   time: number;
 }
 
+export interface ParticleFilterProcessingResponse {
+  id: string;
+  time: number;
+  particles: Particle[];
+}
+
 export interface Particle {
   x: number;
   y: number;
@@ -27,4 +33,19 @@ export interface ParticleFilterSettings {
   numParticles: number;
   maxSpeed: number;
   meanManeverTime: number;
+}
+
+export interface ParticleFilter {
+  id: String;
+  scenario: Scenario;
+  particles: Particle[];
+  time: number;
+  status: ParticleFilterStatus;
+}
+
+export enum ParticleFilterStatus {
+  Running,
+  Paused,
+  Stopped,
+  NotCreated,
 }

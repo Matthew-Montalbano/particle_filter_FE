@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import logo from "./logo.svg";
 
-import { ParticleFilterSettings, Scenario, Particle } from "./interfaces";
+import {
+  ParticleFilterSettings,
+  Scenario,
+  Particle,
+  ParticleFilter,
+  ParticleFilterProcessingResponse,
+  ParticleFilterStatus,
+} from "./interfaces";
 import {
   getAllScenarios,
   createParticleFilter,
@@ -13,16 +20,10 @@ import Button from "./components/Button/Button";
 import Tab from "./components/Tab/Tab";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import FieldInput from "./components/FieldInput/FieldInput";
+import ParticleFilterElement from "./components/ParticleFilter/ParticleFilter";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
-
-enum ParticleFilterStatus {
-  Running,
-  Paused,
-  Stopped,
-  NotCreated,
-}
 
 enum TabType {
   ParticleFilter,
@@ -55,6 +56,7 @@ function App() {
     meanManeuverTime: "",
     maxSpeed: "",
   });
+  const [particleFilter, setParticleFilter] = useState<ParticleFilter>();
 
   const [createScenarioInputErrors, setCreateScenarioInputErrors] = useState({
     scenarioName: "",
@@ -163,9 +165,10 @@ function App() {
   };
 
   const createParticleFilterHandler = () => {
-    if (scenarioSettings == undefined) {
+    if (scenarioSettings == undefined || scenarios == undefined) {
       return;
     }
+    const scenarioId = scenarioSettings.id;
     const errors = {
       numParticles: "",
       meanManeuverTime: "",
@@ -191,9 +194,17 @@ function App() {
     }
     setParticleFilterInputErrors(errors);
     if (!isError) {
-      createParticleFilter(scenarioSettings.id, particleFilterSettings).then(
-        (particles) => {
-          setParticleFilterStatus(ParticleFilterStatus.Paused);
+      createParticleFilter(scenarioId, particleFilterSettings).then(
+        (processingResponse: ParticleFilterProcessingResponse) => {
+          const particleFilter: ParticleFilter = {
+            id: processingResponse.id,
+            scenario: scenarios.get(scenarioId)!,
+            particles: processingResponse.particles,
+            time: processingResponse.time,
+            status: ParticleFilterStatus.Paused,
+          };
+          console.log(processingResponse);
+          setParticleFilter(particleFilter);
           // TODO: Save particles and plot them on graph
         }
       );
@@ -345,6 +356,7 @@ function App() {
         <div className="plot"></div>
         <div className="playback"></div>
       </div>
+      <ParticleFilterElement particleFilterProp={particleFilter} />
     </div>
   );
 }
