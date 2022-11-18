@@ -5,6 +5,7 @@ import Plot from "react-plotly.js";
 import { ParticleFilterStatus } from "../../interfaces";
 import { processNextObservation } from "../../API/API";
 import Button from "../Button/Button";
+import CheckBox from "../Checkbox/Checkbox";
 
 import "./styles.css";
 
@@ -25,6 +26,16 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
     xData: [],
     yData: [],
   });
+  const [averageParticleHistoryPoints, setAverageParticleHistoryPoints] =
+    useState({
+      xData: [],
+      yData: [],
+    });
+  const [showLines, setShowLines] = useState({
+    averageParticle: true,
+    averageParticleHistory: true,
+    trueTarget: true,
+  });
 
   useEffect(() => {
     if (particleFilterProp !== undefined) {
@@ -35,6 +46,7 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
       setStartingTrueTargetPlotData(
         particleFilterProp.scenario.trueTargetStates[0]
       );
+      setAverageParticleHistoryData(particleFilterProp.particles);
       setRunningStatus(ParticleFilterStatus.Paused);
     }
   }, [particleFilterProp]);
@@ -71,8 +83,13 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
     console.log(particleFilter);
     addPlotData(data.particles);
     addAveragePlotData(data.particles);
+    setAverageParticleHistoryData(data.particles);
     addTrueTargetPlotData(getCurrentTargetState(data.time));
-    setParticleFilter((prevState) => ({ ...prevState, time: data.time }));
+    setParticleFilter((prevState) => ({
+      ...prevState,
+      particles: data.particles,
+      time: data.time,
+    }));
   };
 
   const setStartingPlotData = (particles) => {
@@ -146,6 +163,33 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
     )[0];
   };
 
+  const setAverageParticleHistoryData = (particles) => {
+    const [xData, yData] = calculateAverageParticleHistoryData(particles);
+    setAverageParticleHistoryPoints({ xData, yData });
+  };
+
+  const calculateAverageParticleHistoryData = (particles) => {
+    const xCoords = [];
+    const yCoords = [];
+    let observationTimes = Object.keys(particles[0].history)
+      .map((key) => parseInt(key))
+      .sort((a, b) => a - b);
+    for (let i = 0; i < observationTimes.length; i++) {
+      let time = observationTimes[i];
+      let currParticles = [];
+      particles.forEach((particle) => {
+        console.log(typeof particle.history);
+        console.log(particle.history);
+        let currParticle = particle.history[time];
+        currParticles.push({ x: currParticle.x, y: currParticle.y });
+      });
+      let [averageXCoord, averageYCoord] = getAveragePoint(currParticles);
+      xCoords.push(averageXCoord);
+      yCoords.push(averageYCoord);
+    }
+    return [xCoords, yCoords];
+  };
+
   const renderPlaybackButton = () => {
     switch (runningStatus) {
       case ParticleFilterStatus.Paused:
@@ -188,15 +232,6 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               name: "Particle Points",
             },
             {
-              x: averageParticlePoints.xData,
-              y: averageParticlePoints.yData,
-              type: "scatter",
-              mode: "lines+markers",
-              marker: { color: "orange", size: 12 },
-              line: { color: "orange" },
-              name: "Average Particle Location",
-            },
-            {
               x: trueTargetPoints.xData,
               y: trueTargetPoints.yData,
               type: "scatter",
@@ -204,15 +239,80 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               marker: { color: "red", size: 12 },
               line: { color: "red" },
               name: "True Target Location",
+              visible: showLines.trueTarget,
+            },
+            {
+              x: averageParticlePoints.xData,
+              y: averageParticlePoints.yData,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: "orange", size: 12 },
+              line: { color: "orange" },
+              name: "Average Particle Location",
+              visible: showLines.averageParticle,
+            },
+            {
+              x: averageParticleHistoryPoints.xData,
+              y: averageParticleHistoryPoints.yData,
+              type: "scatter",
+              mode: "lines+markers",
+              marker: { color: "purple", size: 12 },
+              line: { color: "purple" },
+              name: "Average Particle History",
+              visible: showLines.averageParticleHistory,
             },
           ]}
-          layout={{ width: 1300, height: 900, title: "Particle Plot" }}
+          layout={{
+            width: 1300,
+            height: 900,
+            title: "Particle Plot",
+            showlegend: true,
+            legend: {
+              x: 0.95,
+              xanchor: "right",
+              y: 0.05,
+            },
+          }}
         />
       </div>
       <div className="vertical-spacer" />
       {particleFilter != undefined ? (
         <div>
-          {renderPlaybackButton()}
+          <div id="plot-controls">
+            {renderPlaybackButton()}
+            <div id="line-toggle-container">
+              <CheckBox
+                title="True Target"
+                onClick={() => {
+                  setShowLines((prevState) => ({
+                    ...prevState,
+                    trueTarget: !prevState.trueTarget,
+                  }));
+                }}
+                active={showLines.trueTarget}
+              />
+              <CheckBox
+                title="Average Particle"
+                onClick={() => {
+                  setShowLines((prevState) => ({
+                    ...prevState,
+                    averageParticle: !prevState.averageParticle,
+                  }));
+                }}
+                active={showLines.averageParticle}
+              />
+              <CheckBox
+                title="Average Particle History"
+                onClick={() => {
+                  setShowLines((prevState) => ({
+                    ...prevState,
+                    averageParticleHistory: !prevState.averageParticleHistory,
+                  }));
+                }}
+                active={showLines.averageParticleHistory}
+              />
+            </div>
+          </div>
           <div className="setting-label mt-4">
             Current Time (seconds): {particleFilter.time}
           </div>

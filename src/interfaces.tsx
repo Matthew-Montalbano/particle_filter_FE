@@ -5,6 +5,13 @@ export interface Scenario {
   seed: number;
 }
 
+export interface State {
+  x: number;
+  y: number;
+  xvelocity: number;
+  yvelocity: number;
+}
+
 export interface TimeStateObject {
   x: number;
   y: number;
@@ -27,6 +34,7 @@ export interface Particle {
   time: number;
   weight: number;
   wasSampled: boolean;
+  history: Map<string, State>;
 }
 
 export interface ParticleFilterSettings {

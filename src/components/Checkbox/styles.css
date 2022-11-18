@@ -1,0 +1,28 @@
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 0px 10px;
+}
+
+.checkbox-label {
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+.checkbox-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #218b82;
+  border-radius: 3px;
+  padding: 0.2em;
+  height: 2em;
+  width: 2em;
+}
+
+.checkbox-active {
+  border-radius: 3px;
+  background-color: #218b82;
+  height: 1em;
+  width: 1em;
+}

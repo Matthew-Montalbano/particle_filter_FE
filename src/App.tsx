@@ -181,9 +181,9 @@ function App() {
     if (
       isNaN(settings.numParticles) ||
       settings.numParticles < 0 ||
-      settings.numParticles > 1000
+      settings.numParticles > 3000
     ) {
-      errors.numParticles = "Number of Particles must be between 0 and 1000";
+      errors.numParticles = "Number of Particles must be between 0 and 3000";
       isError = true;
     }
     if (isNaN(settings.meanManeverTime) || settings.meanManeverTime < 0) {
@@ -352,7 +352,7 @@ function App() {
         </div>
         <div className="configuration-contents">{renderCurrentTab()}</div>
       </div>
-      <div className="visualization">
+      <div id="visualization">
         <ParticleFilterElement particleFilterProp={particleFilter} />
       </div>
     </div>
