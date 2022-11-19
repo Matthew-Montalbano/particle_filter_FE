@@ -36,6 +36,7 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
     averageParticleHistory: true,
     trueTarget: true,
   });
+  const [windowSize, setWindowSize] = useState(getWindowSize());
 
   useEffect(() => {
     if (particleFilterProp !== undefined) {
@@ -58,6 +59,18 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
       runParticleFilter();
     }
   }, [runningStatus, particleFilter]);
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   const toggleParticleFilterPlayback = () => {
     switch (runningStatus) {
@@ -230,14 +243,15 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               type: "scatter",
               mode: "markers",
               name: "Particle Points",
+              marker: { color: "#9AD9DB" },
             },
             {
               x: trueTargetPoints.xData,
               y: trueTargetPoints.yData,
               type: "scatter",
               mode: "lines+markers",
-              marker: { color: "red", size: 12 },
-              line: { color: "red" },
+              marker: { color: "#eb96aa", size: 12 },
+              line: { color: "#eb96aa" },
               name: "True Target Location",
               visible: showLines.trueTarget,
             },
@@ -246,8 +260,8 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               y: averageParticlePoints.yData,
               type: "scatter",
               mode: "lines+markers",
-              marker: { color: "orange", size: 12 },
-              line: { color: "orange" },
+              marker: { color: "#8C7386", size: 12 },
+              line: { color: "#8C7386" },
               name: "Average Particle Location",
               visible: showLines.averageParticle,
             },
@@ -256,16 +270,19 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               y: averageParticleHistoryPoints.yData,
               type: "scatter",
               mode: "lines+markers",
-              marker: { color: "purple", size: 12 },
-              line: { color: "purple" },
+              marker: { color: "#218B82", size: 12 },
+              line: { color: "#218B82" },
               name: "Average Particle History",
               visible: showLines.averageParticleHistory,
             },
           ]}
           layout={{
-            width: 1300,
-            height: 900,
-            title: "Particle Plot",
+            width: windowSize.innerWidth * 0.65,
+            height: windowSize.innerHeight * 0.8,
+            title: {
+              text: "Particle Filter Plot",
+              font: { size: 22, family: "Nunito" },
+            },
             showlegend: true,
             legend: {
               x: 0.95,
@@ -313,13 +330,18 @@ const ParticleFilterElement = ({ particleFilterProp }) => {
               />
             </div>
           </div>
-          <div className="setting-label mt-4">
+          <div className="setting-label mt-2">
             Current Time (seconds): {particleFilter.time}
           </div>
         </div>
       ) : null}
     </div>
   );
+};
+
+const getWindowSize = () => {
+  const { innerWidth, innerHeight } = window;
+  return { innerWidth, innerHeight };
 };
 
 export default ParticleFilterElement;

@@ -3,8 +3,8 @@
   justify-content: center;
   align-items: center;
   background-color: #e7e7e7;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
   border-bottom: none;
   margin-left: 0px;
   margin-right: 0px;
@@ -13,7 +13,7 @@
   width: 9rem;
   cursor: pointer;
   transition: background 0.2s;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .tab.active {

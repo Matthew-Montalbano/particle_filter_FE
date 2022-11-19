@@ -85,10 +85,12 @@ function App() {
     return (
       <div id="particle-filter-settings">
         <div className="settings-container">
-          <h2 className="setting-title">SCENARIO</h2>
-          <DropdownButton id="dropdown-basic" title={scenarioSettings?.id}>
-            {createDropdownItemsForScenario()}
-          </DropdownButton>
+          <div id="scenario-setter" className="d-flex setting-title">
+            <div>SCENARIO</div>
+            <DropdownButton id="dropdown-basic" title={scenarioSettings?.id}>
+              {createDropdownItemsForScenario()}
+            </DropdownButton>
+          </div>
           <div className="settings-layout">
             <div className="setting-listing">
               <div className="setting-label">
@@ -143,6 +145,7 @@ function App() {
               defaultValue={particleFilterSettings.maxSpeed}
             />
           </div>
+          <div className="vertical-spacer" />
           <Button buttonStyle="btn--blue" onClick={createParticleFilterHandler}>
             Start Particle Filter
           </Button>
@@ -256,6 +259,7 @@ function App() {
               <DropdownButton
                 id="dropdown-basic"
                 title={createScenarioDropdownTitle}
+                style={{ backgroundColor: "#218b82" }}
               >
                 {createDropdownItemsForCreateScenario()}
               </DropdownButton>
@@ -266,6 +270,7 @@ function App() {
               </ErrorMessage>
             </div>
           </div>
+          <div className="vertical-spacer" />
           <Button buttonStyle="btn--blue" onClick={createScenarioHandler}>
             Create New Scenario
           </Button>

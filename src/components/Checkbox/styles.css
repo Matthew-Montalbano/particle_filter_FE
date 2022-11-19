@@ -1,12 +1,12 @@
 .checkbox-container {
   display: flex;
   align-items: center;
-  margin: 0px 10px;
+  margin: 0px 0.7rem;
 }
 
 .checkbox-label {
-  margin-left: 8px;
-  font-size: 20px;
+  margin-left: 0.5rem;
+  font-size: 1rem;
 }
 
 .checkbox-box {
@@ -14,15 +14,15 @@
   justify-content: center;
   align-items: center;
   border: 2px solid #218b82;
-  border-radius: 3px;
-  padding: 0.2em;
-  height: 2em;
-  width: 2em;
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+  height: 1.6rem;
+  width: 1.6rem;
 }
 
 .checkbox-active {
-  border-radius: 3px;
+  border-radius: 0.15rem;
   background-color: #218b82;
-  height: 1em;
-  width: 1em;
+  height: 0.8em;
+  width: 0.8em;
 }
