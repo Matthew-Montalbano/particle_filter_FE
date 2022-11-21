@@ -1,6 +1,5 @@
 import React from "react";
-
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ToggleMessage from "../ToggleMessage/ToggleMessage";
 
 import "./styles.css";
 
@@ -38,9 +37,9 @@ const FieldInput = ({
         />
       </div>
       {errorMessage !== undefined ? (
-        <ErrorMessage visible={errorMessage !== ""}>
+        <ToggleMessage visible={errorMessage !== ""} style="error">
           {errorMessage}
-        </ErrorMessage>
+        </ToggleMessage>
       ) : null}
     </div>
   );

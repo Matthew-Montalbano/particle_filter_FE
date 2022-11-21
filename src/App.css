@@ -83,5 +83,24 @@ html {
 #visualization {
   display: flex;
   justify-content: center;
-  margin-left: 1rem;
+  margin-left: 2.5rem;
+}
+
+button.custom-dropdown {
+  background-color: #218b82;
+  border-color: #218b82;
+}
+
+button.custom-dropdown:hover {
+  background-color: #1b726b;
+  border-color: #1b726b;
+}
+
+button.custom-dropdown:active {
+  background-color: #17635c !important;
+  border-color: #17635c !important;
+}
+
+a.dropdown-item:active {
+  background-color: #218b82;
 }

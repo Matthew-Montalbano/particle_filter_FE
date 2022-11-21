@@ -18,7 +18,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "./components/Button/Button";
 import Tab from "./components/Tab/Tab";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
+import ToggleMessage from "./components/ToggleMessage/ToggleMessage";
 import FieldInput from "./components/FieldInput/FieldInput";
 import ParticleFilterElement from "./components/ParticleFilter/ParticleFilter";
 
@@ -37,8 +37,6 @@ function App() {
       maxSpeed: 5,
       meanManeverTime: 10,
     });
-  const [particleFilterStatus, setParticleFilterStatus] =
-    useState<ParticleFilterStatus>(ParticleFilterStatus.NotCreated);
   const [scenarioSettings, setScenarioSettings] = useState<Scenario>();
   const [createScenarioSettings, setCreateScenarioSettings] =
     useState<Scenario>({
@@ -56,14 +54,15 @@ function App() {
     meanManeuverTime: "",
     maxSpeed: "",
   });
-  const [particleFilter, setParticleFilter] = useState<ParticleFilter>();
-
   const [createScenarioInputErrors, setCreateScenarioInputErrors] = useState({
     scenarioName: "",
     standardDeviation: "",
     seed: "",
     trueTargetState: "",
   });
+  const [particleFilter, setParticleFilter] = useState<ParticleFilter>();
+  const [createScenarioSuccessVisibility, setCreateScenarioSuccessVisibility] =
+    useState<boolean>(false);
 
   useEffect(() => {
     getAllScenarios().then((scenarios) => {
@@ -71,6 +70,10 @@ function App() {
       setScenarioSettings(scenarios.get("default"));
     });
   }, []);
+
+  useEffect(() => {
+    setCreateScenarioSuccessVisibility(false);
+  }, [currentTab]);
 
   const renderCurrentTab = (): React.ReactNode => {
     switch (currentTab) {
@@ -87,9 +90,12 @@ function App() {
         <div className="settings-container">
           <div id="scenario-setter" className="d-flex setting-title">
             <div>SCENARIO</div>
-            <DropdownButton id="dropdown-basic" title={scenarioSettings?.id}>
-              {createDropdownItemsForScenario()}
-            </DropdownButton>
+            <Dropdown>
+              <Dropdown.Toggle className="custom-dropdown">
+                {scenarioSettings?.id}
+              </Dropdown.Toggle>
+              <Dropdown.Menu>{createDropdownItemsForScenario()}</Dropdown.Menu>
+            </Dropdown>
           </div>
           <div className="settings-layout">
             <div className="setting-listing">
@@ -208,7 +214,6 @@ function App() {
             time: processingResponse.time,
           };
           setParticleFilter(particleFilter);
-          // TODO: Save particles and plot them on graph
         }
       );
     }
@@ -256,19 +261,27 @@ function App() {
             <div className="field-input-container">
               <label className="field-label">True Target State</label>
               <div className="vertical-spacer" />
-              <DropdownButton
-                id="dropdown-basic"
-                title={createScenarioDropdownTitle}
-                style={{ backgroundColor: "#218b82" }}
-              >
-                {createDropdownItemsForCreateScenario()}
-              </DropdownButton>
-              <ErrorMessage
+              <Dropdown>
+                <Dropdown.Toggle className="custom-dropdown">
+                  {createScenarioDropdownTitle}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {createDropdownItemsForCreateScenario()}
+                </Dropdown.Menu>
+              </Dropdown>
+              <ToggleMessage
                 visible={createScenarioInputErrors.trueTargetState !== ""}
+                style="error"
               >
                 {createScenarioInputErrors.trueTargetState}
-              </ErrorMessage>
+              </ToggleMessage>
             </div>
+            <ToggleMessage
+              visible={createScenarioSuccessVisibility}
+              style="success"
+            >
+              Scenario Created Successfully
+            </ToggleMessage>
           </div>
           <div className="vertical-spacer" />
           <Button buttonStyle="btn--blue" onClick={createScenarioHandler}>
@@ -307,6 +320,7 @@ function App() {
       seed: "",
       trueTargetState: "",
     };
+    setCreateScenarioSuccessVisibility(false);
     if (scenario.id === "") {
       errors.scenarioName = "Scenario name is required";
       isError = true;
@@ -333,6 +347,7 @@ function App() {
       createScenario(createScenarioSettings).then(() => {
         getAllScenarios().then((scenarios) => {
           setScenarios(scenarios);
+          setCreateScenarioSuccessVisibility(true);
         });
       });
     }

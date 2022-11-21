@@ -1,0 +1,17 @@
+.toggle-message {
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  margin-left: 0.2rem;
+}
+
+.error-message {
+  color: #eb96aa;
+}
+
+.success-message {
+  color: #98d4bb;
+}
+
+.default-message {
+  color: black;
+}
