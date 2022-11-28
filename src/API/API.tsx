@@ -1,8 +1,6 @@
 import axios from "axios";
 import {
   Scenario,
-  Particle,
-  TimeStateObject,
   ParticleFilterSettings,
   ParticleFilterProcessingResponse,
 } from "../interfaces";

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
 
 import {
   ParticleFilterSettings,
   Scenario,
-  Particle,
   ParticleFilter,
   ParticleFilterProcessingResponse,
-  ParticleFilterStatus,
 } from "./interfaces";
 import {
   getAllScenarios,
@@ -15,7 +12,6 @@ import {
   createScenario,
 } from "./API/API";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "./components/Button/Button";
 import Tab from "./components/Tab/Tab";
 import ToggleMessage from "./components/ToggleMessage/ToggleMessage";
